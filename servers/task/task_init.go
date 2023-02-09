@@ -36,6 +36,7 @@ func Timer(delay, tick time.Duration, fun TimerFunc, param interface{}, funcDefe
 		for {
 			select {
 			case <-t.C:
+				// 退出定时器
 				if fun(param) == false {
 					return
 				}

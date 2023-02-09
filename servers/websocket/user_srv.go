@@ -10,25 +10,28 @@ package websocket
 import (
 	"errors"
 	"fmt"
-	"github.com/go-redis/redis"
 	"gowebsocket/lib/cache"
 	"gowebsocket/models"
 	"gowebsocket/servers/grpcclient"
 	"time"
+
+	"github.com/go-redis/redis"
 )
 
 // 查询所有用户
+// 个人疑问，从redis获取的结果不能用于判断所有用户吗？
 func UserList(appId uint32) (userList []string) {
 
 	userList = make([]string, 0)
 	currentTime := uint64(time.Now().Unix())
+	// 获取redis中注册，且活跃状态中的服务，活跃状态由心跳机制判断
 	servers, err := cache.GetServerAll(currentTime)
 	if err != nil {
 		fmt.Println("给全体用户发消息", err)
 
 		return
 	}
-
+	// 因用户上线时，会与不同的服务建立链接，所以循环遍历所有服务，获取机器信息，本地机器直接获取用户列表，非本地机器rpc获取用户列表
 	for _, server := range servers {
 		var (
 			list []string
@@ -84,9 +87,9 @@ func checkUserOnline(appId uint32, userId string) (online bool, err error) {
 
 // 给用户发送消息
 func SendUserMessage(appId uint32, userId string, msgId, message string) (sendResults bool, err error) {
-
+	// 封装发生数据格式
 	data := models.GetTextMsgData(userId, msgId, message)
-
+	// 获取与用户建立的socket client，如果不为空，则是当前机器，否则需要通过redis查找对应的服务，并通过rpc发生消息
 	client := GetUserClient(appId, userId)
 
 	if client != nil {
@@ -140,7 +143,7 @@ func SendUserMessageLocal(appId uint32, userId string, data string) (sendResults
 	return
 }
 
-// 给全体用户发消息
+// 给全体用户发消息, 发生消息给所有的服务上的所有用户
 func SendUserMessageAll(appId uint32, userId string, msgId, cmd, message string) (sendResults bool, err error) {
 	sendResults = true
 

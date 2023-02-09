@@ -17,7 +17,7 @@ import (
 
 const (
 	serversHashKey       = "acc:hash:servers" // 全部的服务器
-	serversHashCacheTime = 2 * 60 * 60        // key过期时间
+	serversHashCacheTime = 2 * 60 * 60       // key过期时间
 	serversHashTimeout   = 3 * 60             // 超时时间
 )
 
@@ -66,12 +66,13 @@ func DelServerInfo(server *models.Server) (err error) {
 
 		return
 	}
-
+	// 下线服务器，重新设置过期时间
 	redisClient.Do("Expire", key, serversHashCacheTime)
 
 	return
 }
 
+// 获取所有服务器
 func GetServerAll(currentTime uint64) (servers []*models.Server, err error) {
 
 	servers = make([]*models.Server, 0)

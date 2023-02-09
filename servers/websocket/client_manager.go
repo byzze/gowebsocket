@@ -379,6 +379,8 @@ func GetUserList(appId uint32) (userList []string) {
 func AllSendMessages(appId uint32, userId string, data string) {
 	fmt.Println("全员广播", appId, userId, data)
 
+	// 获取userId对应的client，用于过滤
 	ignoreClient := clientManager.GetUserClient(appId, userId)
+	// 发生数据给所有人
 	clientManager.sendAppIdAll([]byte(data), appId, ignoreClient)
 }

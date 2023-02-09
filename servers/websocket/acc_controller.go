@@ -10,11 +10,12 @@ package websocket
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/go-redis/redis"
 	"gowebsocket/common"
 	"gowebsocket/lib/cache"
 	"gowebsocket/models"
 	"time"
+
+	"github.com/go-redis/redis"
 )
 
 // ping
@@ -129,7 +130,6 @@ func HeartbeatController(client *Client, seq string, message []byte) (code uint3
 			return
 		}
 	}
-
 	client.Heartbeat(currentTime)
 	userOnline.Heartbeat(currentTime)
 	err = cache.SetUserOnlineInfo(client.GetKey(), userOnline)

@@ -11,11 +11,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"google.golang.org/grpc"
 	"gowebsocket/common"
 	"gowebsocket/models"
 	"gowebsocket/protobuf"
 	"time"
+
+	"google.golang.org/grpc"
 )
 
 // rpc client
@@ -106,7 +107,7 @@ func GetUserList(server *models.Server, appId uint32) (userIds []string, err err
 // 发送消息
 // link::https://github.com/grpc/grpc-go/blob/master/examples/helloworld/greeter_client/main.go
 func SendMsg(server *models.Server, seq string, appId uint32, userId string, cmd string, msgType string, message string) (sendMsgId string, err error) {
-	// Set up a connection to the server.
+	// Set up a connection to the server. 建立链接，发生消息
 	conn, err := grpc.Dial(server.String(), grpc.WithInsecure())
 	if err != nil {
 		fmt.Println("连接失败", server.String())

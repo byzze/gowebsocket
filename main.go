@@ -9,8 +9,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
 	"gowebsocket/lib/redislib"
 	"gowebsocket/routers"
 	"gowebsocket/servers/grpcserver"
@@ -21,15 +19,19 @@ import (
 	"os"
 	"os/exec"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 )
 
 func main() {
+	// 初始化配置文件
 	initConfig()
-
+	// 初始化日志文件
 	initFile()
-
+	// 初始化redis
 	initRedis()
-
+	
 	router := gin.Default()
 	// 初始化路由
 	routers.Init(router)
@@ -40,13 +42,13 @@ func main() {
 
 	// 服务注册
 	task.ServerInit()
-
+	// websocket
 	go websocket.StartWebSocket()
 	// grpc
 	go grpcserver.Init()
 
 	go open()
-
+	// http
 	httpPort := viper.GetString("app.httpPort")
 	http.ListenAndServe(":"+httpPort, router)
 
@@ -57,13 +59,14 @@ func initFile() {
 	// Disable Console Color, you don't need console color when writing the logs to file.
 	gin.DisableConsoleColor()
 
-	// Logging to a file.
+	// 获取日志文件配置路径
 	logFile := viper.GetString("app.logFile")
 	f, _ := os.Create(logFile)
 	gin.DefaultWriter = io.MultiWriter(f)
 }
 
 func initConfig() {
+	// 读取配置文件
 	viper.SetConfigName("config/app")
 	viper.AddConfigPath(".") // 添加搜索路径
 
@@ -71,7 +74,7 @@ func initConfig() {
 	if err != nil {
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))
 	}
-
+	// 获取app属性，redis属性
 	fmt.Println("config app:", viper.Get("app"))
 	fmt.Println("config redis:", viper.Get("redis"))
 
@@ -89,7 +92,7 @@ func open() {
 	httpUrl = "http://" + httpUrl + "/home/index"
 
 	fmt.Println("访问页面体验:", httpUrl)
-
+	// 程序启动自动打开网址
 	cmd := exec.Command("open", httpUrl)
 	cmd.Output()
 }
