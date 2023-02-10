@@ -9,6 +9,7 @@ package helper
 
 import (
 	"net"
+	"strings"
 )
 
 // 获取服务器Ip
@@ -37,11 +38,19 @@ import (
  ***	2、https://www.cnblogs.com/chaselogs/p/11301940.html
 ****/
 func GetServerIp() string {
-	ip, err := externalIP()
-	if err != nil {
-		return ""
-	}
-	return ip.String()
+	conn, err := net.Dial("udp", "8.8.8.8:53")
+    if err != nil {
+        return ""
+    }
+    localAddr := conn.LocalAddr().(*net.UDPAddr)
+    ip := strings.Split(localAddr.String(), ":")[0]
+    return ip
+	// 当物理机通过该方式获取的ip不正确,故使用上述方法，可能多网卡时使用下面的方法
+	// ip, err := externalIP()
+	// if err != nil {
+	// 	return ""
+	// }
+	// return ip.String()
 }
 
 func externalIP() (net.IP, error) {

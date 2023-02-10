@@ -287,7 +287,7 @@
         function msg(name, msg) {
             let html = '<div class="admin-group">' +
                 '<div class="admin-img" >' + name + '</div>' +
-                // '<img class="admin-img" src="http://localhost/public/img/aa.jpg" />'+
+                // '<img class="admin-img" src="http://byzze.com/public/img/aa.jpg" />'+
                 '<div class="admin-msg">' +
                 '<i class="triangle-admin"></i>' +
                 '<span class="admin-reply">' + msg + '</span>' +
@@ -303,7 +303,7 @@
                 '<i class="triangle-user"></i>' +
                 '</div>' +
                 '<div class="user-img" >' + name + '</div>' +
-                // '<img class="user-img" src="http://localhost/public/img/cc.jpg" />'+
+                // '<img class="user-img" src="http://byzze.com/public/img/cc.jpg" />'+
                 '</div>';
             return html
         }
@@ -335,7 +335,7 @@
 
 
         // 连接webSocket
-        ws = new WebSocket("ws://127.0.0.1:8089/acc");
+        ws = new WebSocket("ws://byzze.com:8089/acc");
 
         ws.onopen = function(evt) {
             console.log("Connection open ...");
@@ -407,7 +407,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: 'http://127.0.0.1:8080/user/sendMessageAll',
+                    url: 'http://byzze.com:8080/user/sendMessageAll',
                     data: {
                         appId: "101",
                         userId: person,
@@ -429,7 +429,7 @@
         function getUserList() {
             $.ajax({
                 type: "GET",
-                url: "http://127.0.0.1:8080/user/list",
+                url: "http://byzze.com:8080/user/list",
                 dataType: "json",
                 success: function(data) {
                     console.log("user list:" + data.code + "userList:" + data.data.userList);
