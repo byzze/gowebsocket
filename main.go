@@ -15,6 +15,7 @@ import (
 	"gowebsocket/servers/task"
 	"gowebsocket/servers/websocket"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"os/exec"
@@ -61,7 +62,10 @@ func initFile() {
 
 	// 获取日志文件配置路径
 	logFile := viper.GetString("app.logFile")
-	f, _ := os.Create(logFile)
+	f, err := os.Create(logFile)
+	if err != nil {
+		log.Println(err)
+	}
 	gin.DefaultWriter = io.MultiWriter(f)
 }
 
