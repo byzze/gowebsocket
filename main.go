@@ -31,7 +31,7 @@ func main() {
 	initFile()
 	// 初始化redis
 	initRedis()
-	
+
 	router := gin.Default()
 	// 初始化路由
 	routers.Init(router)

@@ -429,7 +429,17 @@
             let msg = $("input[name='msg']").val()
             console.log("button 点击:" + msg);
             if (msg !== "") {
-
+               /* var data = {
+                        appId: appId,
+                        userId: person,
+                        msgId: sendId(),
+                        message: msg,
+                        cmd: "msg",
+                    }
+                var val = JSON.stringify(data)
+                ws.send('{"seq":"' + sendId() + '","cmd":"msg","data": ' + val + '}');
+                addChatWith(myMsg(person, msg))
+                $("input[name='msg']").val(""); */
                 $.ajax({
                     type: "POST",
                     url: 'http://{{ .httpUrl }}/user/sendMessageAll',
@@ -445,7 +455,7 @@
                         addChatWith(myMsg(person, msg))
                         $("input[name='msg']").val("");
                     }
-                });
+                }); 
             }
         }
 

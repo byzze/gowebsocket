@@ -11,23 +11,24 @@ package protobuf;
 // The AccServer service definition.
 service AccServer {
     // 查询用户是否在线
-    rpc QueryUsersOnline (QueryUsersOnlineReq) returns (QueryUsersOnlineRsp) {
-    }
+    rpc QueryUsersOnline (QueryUsersOnlineReq) returns (QueryUsersOnlineRsp) { }
     // 发送消息
-    rpc SendMsg (SendMsgReq) returns (SendMsgRsp) {
-    }
+    rpc SendMsg (SendMsgReq) returns (SendMsgRsp) {}
     // 给这台机器的房间内所有用户发送消息
-    rpc SendMsgAll (SendMsgAllReq) returns (SendMsgAllRsp) {
-    }
+    rpc SendMsgAll (SendMsgAllReq) returns (SendMsgAllRsp) {}
     // 获取用户列表
-    rpc GetUserList (GetUserListReq) returns (GetUserListRsp) {
-    }
+    rpc GetUserList (GetUserListReq) returns (GetUserListRsp) {}
 }
 
 // 查询用户是否在线
 message QueryUsersOnlineReq {
     uint32 appId = 1; // AppID
     string userId = 2; // 用户ID
+    string userIdtest = 3; // testID
+    map<string,string> userIdmap = 4; // testID
+    repeated string retest = 5;
+    reserved 15, 9 to 11;
+    reserved "foo", "bar";
 }
 
 message QueryUsersOnlineRsp {

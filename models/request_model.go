@@ -26,3 +26,11 @@ type Login struct {
 type HeartBeat struct {
 	UserId string `json:"userId,omitempty"`
 }
+
+type Msg struct {
+	AppID   uint32 `json:"appId"`
+	UserID  string `jsong:"userId"`
+	MsgID   string `json:"msgId"`
+	Message string `json:"message"`
+	Cmd     string `json:"cmd"`
+}

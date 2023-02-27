@@ -18,6 +18,28 @@ import (
 	"github.com/go-redis/redis"
 )
 
+// 在websocket中处理接受数据全发消息逻辑
+func MsgController(client *Client, seq string, message []byte) (code uint32, msg string, data interface{}) {
+	code = common.OK
+
+	request := &models.Msg{}
+	if err := json.Unmarshal(message, request); err != nil {
+		code = common.ParameterIllegal
+		fmt.Println("发送消息 解析数据失败", seq, err)
+
+		return
+	}
+
+	fmt.Println("webSocket_request 发送消息", request.Message)
+
+	_, err := SendUserMessageAll(request.AppID, request.UserID, request.MsgID, request.Cmd, request.Message)
+	if err != nil {
+		fmt.Println("发送消息 解析数据失败", err)
+
+	}
+	return
+}
+
 // ping
 func PingController(client *Client, seq string, message []byte) (code uint32, msg string, data interface{}) {
 
